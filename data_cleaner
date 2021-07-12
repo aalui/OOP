@@ -1,0 +1,16 @@
+class test:
+    import pandas as pd
+   
+    headers = {'Org Level 3 Desc.' : 'Country', 'Marketing Part (MPN)' : 'MPN', 'Color Desc.':'Colour', 'Storage Size (Capacity) Desc.':'NAND'}
+    
+    def createName(self,name):
+        self.name = name
+    
+    def dataPull(self,rabbit):
+        self.rabbit = pd.read_excel('/Users/aaronlui/Documents/Fall FY21/Launch_data_all.xlsx', sheet_name = self.name, skiprows = 10)
+        self.rabbit = self.rabbit.iloc[:,9:]
+        self.rabbit = self.rabbit.rename(columns = headers)
+        self.rabbit = self.rabbit.pivot_table(index = ['Fiscal Year Week','Country','Sub LOB','MPN','Colour','NAND'], columns = 'Values', values = 'Unnamed: 16')
+        self.rabbit = self.rabbit.reset_index()
+        self.rabbit['IS'] = self.rabbit['RIS Store 1 Unit Count '] / self.rabbit['RIS Store Count ']
+        self.rabbit['SL'] = self.rabbit['RIS Max Demand Support '] / self.rabbit['RIS Demand Daily Fcst Qty ']
